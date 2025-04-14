@@ -20,6 +20,17 @@ class PoiController {
             return res.status(400).json({ error: error.message });
         }
     }
+
+    async Delete(req, res) {
+        try {
+            const id = req.params.id;
+
+            const result = await PoiService.Delete(id);
+            return res.status(200).json(result);
+        } catch (error) {
+            return res.status(400).json({ error: error.message });
+        }
+    }
 }
 
 export default new PoiController();

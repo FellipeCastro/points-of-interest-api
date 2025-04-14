@@ -5,5 +5,6 @@ const router = Router();
 
 router.get("/poi", PoiController.List);
 router.post("/poi", PoiController.Insert);
+router.delete("/poi/:id", PoiController.Delete);
 
 export default router;

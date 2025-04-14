@@ -27,7 +27,7 @@ class PoiRepository {
             throw new Error("Erro ao listar POI's: " + error.message);
         }
     }
-    
+
     async Insert(name, coordinateX, coordinateY) {
         try {
             const sql =
@@ -43,6 +43,16 @@ class PoiRepository {
         } catch (error) {
             console.error("Erro ao inserir POI: ", error);
             throw new Error("Erro ao inserir POI: " + error.message);
+        }
+    }
+
+    async Delete(id) {
+        try {
+            const sql = "DELETE FROM points_of_interest WHERE id = ?";
+            await consult(sql, [id]);
+        } catch (error) {
+            console.error("Erro ao deletar POI: ", error);
+            throw new Error("Erro ao deletar POI: " + error.message);
         }
     }
 }

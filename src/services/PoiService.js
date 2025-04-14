@@ -47,6 +47,14 @@ class PoiService {
             throw new Error(error.message);
         }
     }
+
+    async Delete(id) {
+        try {
+            return await PoiRepository.Delete(id);
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
 }
 
 export default new PoiService();
