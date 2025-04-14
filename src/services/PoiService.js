@@ -1,6 +1,14 @@
 import PoiRepository from "../repositories/PoiRepository.js";
 
 class PoiService {
+    async List() {
+        try {
+            return await PoiRepository.List();
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+
     async Insert(name, coordinateX, coordinateY) {
         try {
             if (!name || name.trim() === "") {
@@ -23,7 +31,16 @@ class PoiService {
                 throw new Error("A coordenada Y não pode ser negativa!");
             }
 
-            //Validação para resgistros iguais!!!
+            const existingPoi = await PoiRepository.FindByCoordinatesOrName(coordinateX, coordinateY, name);
+            
+            if (existingPoi) {
+                if (existingPoi.name === name) {
+                    throw new Error("Já existe um POI com este nome!");
+                }
+                if (existingPoi.coordinate_x === coordinateX && existingPoi.coordinate_y === coordinateY) {
+                    throw new Error("Já existe um POI com estas coordenadas!");
+                }
+            }
 
             return await PoiRepository.Insert(name, coordinateX, coordinateY);
         } catch (error) {

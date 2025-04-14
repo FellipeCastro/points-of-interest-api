@@ -1,8 +1,9 @@
 import { Router } from "express";
-import RoiController from "./controllers/RoiController.js";
+import PoiController from "./controllers/PoiController.js";
 
 const router = Router();
 
-router.post("/poi", RoiController.Insert);
+router.get("/poi", PoiController.List);
+router.post("/poi", PoiController.Insert);
 
 export default router;

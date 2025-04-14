@@ -1,6 +1,15 @@
 import PoiService from "../services/PoiService.js";
 
-class RoiController {
+class PoiController {
+    async List(req, res) {
+        try {
+            const result = await PoiService.List();
+            return res.status(200).json(result);
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
+        }
+    }
+
     async Insert(req, res) {
         try {
             const { name, coordinateX, coordinateY } = req.body;
@@ -13,4 +22,4 @@ class RoiController {
     }
 }
 
-export default new RoiController();
+export default new PoiController();
