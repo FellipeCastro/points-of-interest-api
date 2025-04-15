@@ -17,6 +17,17 @@ class PoiRepository {
         }
     }
 
+    async FindById(id) {
+        try {
+            const sql = "SELECT * FROM points_of_interest WHERE id = ? LIMIT 1";
+            const [poi] = await consult(sql, [id]);
+            return poi || null;
+        } catch (error) {
+            console.error("Erro ao buscar POI por ID: ", error);
+            throw new Error("Erro ao buscar POI: " + error.message);
+        }
+    }
+
     async List() {
         try {
             const sql = "SELECT * FROM points_of_interest";
@@ -34,11 +45,11 @@ class PoiRepository {
                 "INSERT INTO points_of_interest (name, coordinate_x, coordinate_y) VALUES (?, ?, ?)";
             const result = await consult(sql, [name, coordinateX, coordinateY]);
 
-            const { newPoi } = await consult(
+            const [newPoi] = await consult(
                 "SELECT * FROM points_of_interest WHERE id = ?",
                 [result.insertId]
             );
-
+            
             return newPoi;
         } catch (error) {
             console.error("Erro ao inserir POI: ", error);
