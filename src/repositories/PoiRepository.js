@@ -49,7 +49,7 @@ class PoiRepository {
                 "SELECT * FROM points_of_interest WHERE id = ?",
                 [result.insertId]
             );
-            
+
             return newPoi;
         } catch (error) {
             console.error("Erro ao inserir POI: ", error);
@@ -61,6 +61,7 @@ class PoiRepository {
         try {
             const sql = "DELETE FROM points_of_interest WHERE id = ?";
             await consult(sql, [id]);
+            return { id: id };
         } catch (error) {
             console.error("Erro ao deletar POI: ", error);
             throw new Error("Erro ao deletar POI: " + error.message);
