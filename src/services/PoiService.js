@@ -1,12 +1,16 @@
 import PoiRepository from "../repositories/PoiRepository.js";
-import { BadRequestError, ConflictError } from "../helpers/apiError.js";
+import {
+    BadRequestError,
+    ConflictError,
+    NotFoundError,
+} from "../helpers/apiError.js";
 
 class PoiService {
     async ListByProximity(xRef, yRef, maxDistance) {
         const pois = await PoiRepository.List();
         const filteredPois = [];
 
-        if (!xRef) {
+        if (xRef === undefined || xRef === null) {
             throw new BadRequestError("A coordenada X é obrigatória!");
         }
 
@@ -20,7 +24,7 @@ class PoiService {
             throw new BadRequestError("A coordenada X não pode ser negativa!");
         }
 
-        if (!yRef) {
+        if (yRef === undefined || yRef === null) {
             throw new BadRequestError("A coordenada Y é obrigatória!");
         }
 
@@ -34,7 +38,7 @@ class PoiService {
             throw new BadRequestError("A coordenada Y não pode ser negativa!");
         }
 
-        if (!maxDistance) {
+        if (maxDistance === undefined || maxDistance === null) {
             throw new BadRequestError("A distância máxima é obrigatória!");
         }
 
@@ -80,7 +84,7 @@ class PoiService {
             throw new BadRequestError("O nome do POI é obrigatório!");
         }
 
-        if (!coordinateX) {
+        if (coordinateX === undefined || coordinateX === null) {
             throw new BadRequestError("A coordenada X é obrigatória!");
         }
 
@@ -94,7 +98,7 @@ class PoiService {
             throw new BadRequestError("A coordenada X não pode ser negativa!");
         }
 
-        if (!coordinateY) {
+        if (coordinateY === undefined || coordinateY === null) {
             throw new BadRequestError("A coordenada Y é obrigatória!");
         }
 
@@ -132,7 +136,7 @@ class PoiService {
     }
 
     async Delete(id) {
-        const poiExists = await PoiService.FindById(id);
+        const poiExists = await this.FindById(id);
 
         if (!poiExists) {
             throw new NotFoundError("POI não encontrado");
