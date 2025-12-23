@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+    app:
+        container_name: points-of-interest-api
+        build: .
+        restart: always
+        ports:
+            - 5000:5000
+        depends_on:
+            - db
+        env_file:
+            - .env
+
+    db:
+        image: mysql
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: rootpassword
+            MYSQL_DATABASE: xy_gps_pois
+            MYSQL_USER: root
+            MYSQL_PASSWORD: rootpassword
+        volumes:
+            - db-data:/var/lib/mysql
+            - ./db/init:/docker-entrypoint-initdb.d:ro
+        ports:
+            - "3306:3306"
+
+volumes:
+    db-data:

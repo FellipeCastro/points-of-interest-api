@@ -10,7 +10,8 @@ app.use(cors());
 app.use(router);
 app.use(errorMiddleware);
 
-const PORT = 5000;
-app.listen(PORT, () => {
-    console.log("Servidor rodando em: http://localhost:" + PORT);
+const PORT = process.env.PORT || 5000;
+const HOST = "localhost";
+app.listen(PORT, HOST, () => {
+    console.log(`Servidor rodando em: http://${HOST}:${PORT}`);
 });
