@@ -1,20 +1,32 @@
 {
-  "name": "points-of-interest-api",
-  "version": "1.0.0",
-  "description": "API para cadastro e consulta de pontos de interesse",
-  "main": "app.js",
-  "type": "module",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node --watch src/app.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^16.5.0",
-    "express": "^5.1.0",
-    "mysql2": "^3.14.0"
-  }
+    "name": "points-of-interest-api",
+    "version": "1.0.0",
+    "description": "API para cadastro e consulta de pontos de interesse",
+    "main": "app.js",
+    "type": "module",
+    "scripts": {
+        "test": "jest",
+        "test:e2e": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --runInBand --config=jest.e2e.config.js",
+        "dev": "node --watch src/server.js",
+        "start": "node server.js",
+        "test:db:up": "docker-compose up -d mysql-test",
+        "test:db:down": "docker-compose down"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "dotenv": "^16.5.0",
+        "express": "^5.1.0",
+        "mysql2": "^3.14.0"
+    },
+    "devDependencies": {
+        "@faker-js/faker": "^10.1.0",
+        "cross-env": "^10.1.0",
+        "jest": "^30.2.0",
+        "nock": "^14.0.10",
+        "pg-mem": "^3.0.5",
+        "supertest": "^7.1.4"
+    }
 }
