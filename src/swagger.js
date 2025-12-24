@@ -3,7 +3,7 @@ export default {
     info: {
         title: "Points of Interest API",
         version: "1.0.0",
-        description: "API para cadastro e consulta de pontos de interesse",
+        description: "API for registering and querying points of interest",
     },
     servers: [{ url: "http://localhost:5000" }],
     components: {
@@ -11,10 +11,28 @@ export default {
             Poi: {
                 type: "object",
                 properties: {
-                    id: { type: "integer", example: 1 },
-                    name: { type: "string", example: "Lanchonete" },
-                    coordinate_x: { type: "integer", example: 27 },
-                    coordinate_y: { type: "integer", example: 12 },
+                    id: {
+                        type: "integer",
+                        example: 1,
+                        description: "Identificador único do POI",
+                    },
+                    name: {
+                        type: "string",
+                        example: "Snack Bar",
+                        description: "Nome do ponto de interesse",
+                    },
+                    coordinate_x: {
+                        type: "integer",
+                        example: 27,
+                        description:
+                            "Coordenada X (sistema de referência do domínio)",
+                    },
+                    coordinate_y: {
+                        type: "integer",
+                        example: 12,
+                        description:
+                            "Coordenada Y (sistema de referência do domínio)",
+                    },
                 },
             },
             PoiWithDistance: {
@@ -41,18 +59,44 @@ export default {
             ProximityRequest: {
                 type: "object",
                 properties: {
-                    xRef: { type: "integer", example: 20 },
-                    yRef: { type: "integer", example: 10 },
-                    maxDistance: { type: "integer", example: 10 },
+                    xRef: {
+                        type: "integer",
+                        example: 20,
+                        description:
+                            "Coordenada X de referência (inteiro não-negativo)",
+                    },
+                    yRef: {
+                        type: "integer",
+                        example: 10,
+                        description:
+                            "Coordenada Y de referência (inteiro não-negativo)",
+                    },
+                    maxDistance: {
+                        type: "integer",
+                        example: 10,
+                        description: "Distância máxima (inteiro não-negativo)",
+                    },
                 },
                 required: ["xRef", "yRef", "maxDistance"],
             },
             InsertPoiRequest: {
                 type: "object",
                 properties: {
-                    name: { type: "string", example: "Lanchonete" },
-                    coordinateX: { type: "integer", example: 27 },
-                    coordinateY: { type: "integer", example: 12 },
+                    name: {
+                        type: "string",
+                        example: "Snack Bar",
+                        description: "Nome do POI (string não vazia)",
+                    },
+                    coordinateX: {
+                        type: "integer",
+                        example: 27,
+                        description: "Coordenada X (inteiro não-negativo)",
+                    },
+                    coordinateY: {
+                        type: "integer",
+                        example: 12,
+                        description: "Coordenada Y (inteiro não-negativo)",
+                    },
                 },
                 required: ["name", "coordinateX", "coordinateY"],
             },
@@ -61,7 +105,7 @@ export default {
     paths: {
         "/health": {
             get: {
-                summary: "Check health",
+                summary: "Health check",
                 responses: { 200: { description: "OK" } },
             },
         },
@@ -85,11 +129,17 @@ export default {
             post: {
                 summary: "Create a POI",
                 requestBody: {
+                    description: "Objeto com os dados do POI a ser criado",
                     required: true,
                     content: {
                         "application/json": {
                             schema: {
                                 $ref: "#/components/schemas/InsertPoiRequest",
+                            },
+                            example: {
+                                name: "Lanchonete",
+                                coordinateX: 27,
+                                coordinateY: 12,
                             },
                         },
                     },
@@ -134,7 +184,8 @@ export default {
                         name: "id",
                         in: "path",
                         required: true,
-                        schema: { type: "integer" },
+                        description: "ID do ponto de interesse a ser removido",
+                        schema: { type: "integer", example: 1, minimum: 1 },
                     },
                 ],
                 responses: {
@@ -166,12 +217,15 @@ export default {
             post: {
                 summary: "List POIs by proximity",
                 requestBody: {
+                    description:
+                        "Parâmetros para buscar POIs próximos à referência",
                     required: true,
                     content: {
                         "application/json": {
                             schema: {
                                 $ref: "#/components/schemas/ProximityRequest",
                             },
+                            example: { xRef: 20, yRef: 10, maxDistance: 10 },
                         },
                     },
                 },
