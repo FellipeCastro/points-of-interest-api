@@ -7,7 +7,7 @@
     "scripts": {
         "test": "jest",
         "test:e2e": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --runInBand --config=jest.e2e.config.js",
-        "dev": "node --watch src/server.js",
+        "dev": "node --watch server.js",
         "start": "node server.js",
         "test:db:up": "docker-compose up -d mysql-test",
         "test:db:down": "docker-compose down"
@@ -19,7 +19,9 @@
         "cors": "^2.8.5",
         "dotenv": "^16.5.0",
         "express": "^5.1.0",
-        "mysql2": "^3.14.0"
+        "mysql2": "^3.14.0",
+        "swagger-jsdoc": "^6.2.8",
+        "swagger-ui-express": "^5.0.1"
     },
     "devDependencies": {
         "@faker-js/faker": "^10.1.0",

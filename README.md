@@ -119,10 +119,17 @@ npm run test:db:down
 
 ---
 
-## Licença
+## Documentação 🔖
 
-Este projeto está licenciado sob a licença padrão do repositório (ver `LICENSE`).
+A API agora expõe uma documentação OpenAPI (Swagger UI):
+
+-   **UI interativa**: `GET /docs` → interface visual com todos os endpoints
+-   **Spec JSON**: `GET /docs.json` → arquivo OpenAPI em JSON
+
+Abra `http://localhost:5000/docs` após iniciar a aplicação para navegar pelos endpoints e testar requisições.
 
 ---
 
-Se quiser, eu posso adicionar um badge de CI no topo e um trecho com comandos de migração se você usar uma ferramenta de migrations (ex.: knex, sequelize, migrate).
+## Licença
+
+Este projeto está licenciado sob a licença padrão do repositório (ver `LICENSE`).

@@ -1,0 +1,212 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Points of Interest API",
+        "version": "1.0.0",
+        "description": "API para cadastro e consulta de pontos de interesse"
+    },
+    "servers": [{ "url": "http://localhost:5000" }],
+    "components": {
+        "schemas": {
+            "Poi": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "integer", "example": 1 },
+                    "name": { "type": "string", "example": "Lanchonete" },
+                    "coordinate_x": { "type": "integer", "example": 27 },
+                    "coordinate_y": { "type": "integer", "example": 12 }
+                }
+            },
+            "PoiWithDistance": {
+                "allOf": [
+                    { "$ref": "#/components/schemas/Poi" },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "distance": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 3.16
+                            }
+                        }
+                    }
+                ]
+            },
+            "ErrorResponse": {
+                "type": "object",
+                "properties": {
+                    "message": { "type": "string" }
+                }
+            },
+            "ProximityRequest": {
+                "type": "object",
+                "properties": {
+                    "xRef": { "type": "integer", "example": 20 },
+                    "yRef": { "type": "integer", "example": 10 },
+                    "maxDistance": { "type": "integer", "example": 10 }
+                },
+                "required": ["xRef", "yRef", "maxDistance"]
+            },
+            "InsertPoiRequest": {
+                "type": "object",
+                "properties": {
+                    "name": { "type": "string", "example": "Lanchonete" },
+                    "coordinateX": { "type": "integer", "example": 27 },
+                    "coordinateY": { "type": "integer", "example": 12 }
+                },
+                "required": ["name", "coordinateX", "coordinateY"]
+            }
+        }
+    },
+    "paths": {
+        "/health": {
+            "get": {
+                "summary": "Check health",
+                "responses": {
+                    "200": { "description": "OK" }
+                }
+            }
+        },
+        "/poi": {
+            "get": {
+                "summary": "List all POIs",
+                "responses": {
+                    "200": {
+                        "description": "List of POIs",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Poi"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a POI",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/InsertPoiRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": { "$ref": "#/components/schemas/Poi" }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/poi/{id}": {
+            "delete": {
+                "summary": "Delete a POI",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": { "type": "integer" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": { "type": "integer" }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/nextpois": {
+            "post": {
+                "summary": "List POIs by proximity",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProximityRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "List of POIs within distance",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PoiWithDistance"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
