@@ -1,20 +1,33 @@
 version: "3.8"
+
 services:
-    mysql-test:
+    # Application service (dev/production)
+    app:
+        container_name: points-of-interest-api
+        build: .
+        restart: always
+        ports:
+            - 5000:5000
+        depends_on:
+            - db
+        env_file:
+            - .env
+
+    # Primary MySQL used for development / running the app
+    db:
         image: mysql:8
         environment:
             MYSQL_ROOT_PASSWORD: password
-            MYSQL_DATABASE: points_of_interest_test
+            MYSQL_DATABASE: points_of_interest
         ports:
-            - "3307:3306"
+            - "3306:3306"
         healthcheck:
             test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
             interval: 5s
             timeout: 5s
             retries: 10
         volumes:
-            - mysql-data-test:/var/lib/mysql
+            - mysql-data:/var/lib/mysql
 
 volumes:
-    mysql-data-test:
-        driver: local
+    mysql-data:

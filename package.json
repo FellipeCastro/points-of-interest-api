@@ -9,8 +9,14 @@
         "test:e2e": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --runInBand --config=jest.e2e.config.js",
         "dev": "node --watch server.js",
         "start": "node server.js",
-        "test:db:up": "docker-compose up -d mysql-test",
-        "test:db:down": "docker-compose down"
+        "test:db:up": "docker compose up -d db",
+        "test:db:down": "docker compose down",
+
+        "docker:dev": "docker compose up --build --remove-orphans app-dev",
+        "docker:prod": "docker compose up -d --build --remove-orphans app",
+        "docker:test": "docker compose up --build --abort-on-container-exit --exit-code-from test-runner test-runner",
+        "docker:down": "docker compose down",
+        "docker:clean": "docker compose down -v --remove-orphans"
     },
     "keywords": [],
     "author": "",
